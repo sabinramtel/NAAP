@@ -1,0 +1,32 @@
+name: naap
+description: "NAAP (नाप) - AI size measurement and virtual try-on app. Team blueprint, built one sprint per week."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.5.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # Saves small settings: onboarding seen, user records, profile, login attempts.
+  shared_preferences: ^2.3.2
+  # Keeps the login session token in encrypted phone storage (US-005).
+  flutter_secure_storage: ^9.2.2
+  # SHA-256 for salted password hashes in local mode (US-001, US-008).
+  crypto: ^3.0.6
+  # Profile photo from the gallery (US-011).
+  image_picker: ^1.1.2
+  flutter_test:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
