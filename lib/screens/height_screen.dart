@@ -10,7 +10,7 @@ import '../services/profile_store.dart';
 import '../utils/unit_converter.dart';
 import '../widgets/height_ruler.dart';
 import '../widgets/primary_button.dart';
-import 'profile_setup_screen.dart';
+import 'home_screen.dart';
 
 /// US-012: pick height on a ruler or type it, in cm or ft/in. Height is always
 /// stored in whole centimetres; feet and inches are only for display.
@@ -78,7 +78,7 @@ class _HeightScreenState extends State<HeightScreen> {
     if (widget.editing) {
       Navigator.of(context).pop(true);
     } else {
-      AppFlow.goAndClear(context, const ProfileSetupScreen());
+      AppFlow.goAndClear(context, const HomeScreen());
     }
   }
 

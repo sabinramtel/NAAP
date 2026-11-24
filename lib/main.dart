@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'constants/app_colors.dart';
-import 'screens/onboarding_screen.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const NaapApp());
@@ -27,7 +27,7 @@ class NaapApp extends StatelessWidget {
         ),
         snackBarTheme: const SnackBarThemeData(behavior: SnackBarBehavior.floating),
       ),
-      home: const OnboardingScreen(),
+      home: const SplashScreen(),
     );
   }
 }

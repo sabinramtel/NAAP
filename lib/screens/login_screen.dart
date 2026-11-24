@@ -7,8 +7,10 @@ import '../constants/app_strings.dart';
 import '../services/auth_service.dart';
 import '../utils/validators.dart';
 import '../widgets/app_text_field.dart';
+import '../widgets/naap_logo.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
+import 'forgot_password_screen.dart';
 import 'sign_up_screen.dart';
 
 /// US-003: log in with email and password. Wrong details show one general message,
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Center(child: Icon(Icons.accessibility_new, size: 64, color: AppColors.blue)),
+                const Center(child: NaapLogo(size: 64)),
                 const SizedBox(height: 20),
                 const Text('Welcome back',
                     textAlign: TextAlign.center,
@@ -105,7 +107,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     padding: const EdgeInsets.only(top: 10, left: 4),
                     child: Text(error!, style: const TextStyle(color: AppColors.error)),
                   ),
-                const SizedBox(height: 16),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () => Navigator.of(context)
+                        .push(MaterialPageRoute(builder: (_) => const ForgotPasswordScreen())),
+                    child: const Text(AppStrings.forgotPassword),
+                  ),
+                ),
+                const SizedBox(height: 8),
                 PrimaryButton(label: AppStrings.logIn, loading: loading, onPressed: _logIn),
                 const SizedBox(height: 14),
                 SocialButton(label: AppStrings.continueWithGoogle, image: googleImage, onPressed: _google),
