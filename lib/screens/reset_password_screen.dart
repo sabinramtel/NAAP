@@ -31,10 +31,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (!formKey.currentState!.validate()) return;
     setState(() => loading = true);
     try {
-      await AuthService.instance.resetPassword(token: widget.token, newPassword: newController.text);
+      await AuthService.instance
+          .resetPassword(token: widget.token, newPassword: newController.text);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password changed. Log in with your new password.')));
+          SnackBar(content: Text(AppStrings.passwordChangedLogIn)));
       AppFlow.goAndClear(context, const LoginScreen());
     } on AuthException catch (e) {
       if (mounted) setState(() => error = e.message);
@@ -62,8 +63,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Choose a new password',
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
+                Text(AppStrings.chooseNewPassword,
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.navy)),
                 const SizedBox(height: 24),
                 AppTextField(
                   controller: newController,
@@ -79,15 +83,19 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   label: AppStrings.confirmPassword,
                   icon: Icons.lock_outline,
                   isPassword: true,
-                  validator: (v) => v == newController.text ? null : AppStrings.passwordsDontMatch,
+                  validator: (v) => v == newController.text
+                      ? null
+                      : AppStrings.passwordsDontMatch,
                 ),
                 if (error != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Text(error!, style: const TextStyle(color: AppColors.error)),
+                    child: Text(error!,
+                        style: const TextStyle(color: AppColors.error)),
                   ),
                 const SizedBox(height: 24),
-                PrimaryButton(label: AppStrings.save, loading: loading, onPressed: _save),
+                PrimaryButton(
+                    label: AppStrings.save, loading: loading, onPressed: _save),
               ],
             ),
           ),

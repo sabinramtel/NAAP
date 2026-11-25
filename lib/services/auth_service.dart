@@ -72,13 +72,15 @@ class AuthService {
     return diff == 0;
   }
 
-  Future<Map<String, dynamic>?> _readUser(SharedPreferences prefs, String email) async {
+  Future<Map<String, dynamic>?> _readUser(
+      SharedPreferences prefs, String email) async {
     final raw = prefs.getString(_userKey(email));
     if (raw == null) return null;
     return jsonDecode(raw) as Map<String, dynamic>;
   }
 
-  Future<void> _writeUser(SharedPreferences prefs, String email, Map<String, dynamic> data) =>
+  Future<void> _writeUser(
+          SharedPreferences prefs, String email, Map<String, dynamic> data) =>
       prefs.setString(_userKey(email), jsonEncode(data));
 
   NaapUser _toUser(String email, Map<String, dynamic> data) => NaapUser(
@@ -89,10 +91,13 @@ class AuthService {
 
   // ---------- US-001 sign up ----------
 
-  Future<NaapUser> signUp({required String name, required String email, required String password}) async {
+  Future<NaapUser> signUp(
+      {required String name,
+      required String email,
+      required String password}) async {
     final prefs = await SharedPreferences.getInstance();
     if (await _readUser(prefs, email) != null) {
-      throw const AuthException('email-taken', AppStrings.emailTaken);
+      throw AuthException('email-taken', AppStrings.emailTaken);
     }
     final salt = _newSalt();
     final data = {
@@ -113,10 +118,8 @@ class AuthService {
   // ---------- US-002 Google ----------
 
   Future<NaapUser> signInWithGoogle() async {
-    throw const AuthException(
-      'google-needs-firebase',
-      'Google sign-in will work once the team connects Firebase. Use email for now.',
-    );
+    throw AuthException(
+        'google-needs-firebase', AppStrings.googleNeedsFirebase);
   }
 
   // ---------- US-003 log in with lockout ----------
@@ -127,28 +130,32 @@ class AuthService {
     return LoginGuard.fromJson(jsonDecode(raw) as Map<String, dynamic>);
   }
 
-  Future<NaapUser> logIn({required String email, required String password}) async {
+  Future<NaapUser> logIn(
+      {required String email, required String password}) async {
     final prefs = await SharedPreferences.getInstance();
     final now = DateTime.now();
     final guard = await _readGuard(prefs, email);
 
     final wait = guard.remainingLock(now);
     if (wait != null) {
-      throw AuthException('locked', 'Too many tries. Try again in ${LoginGuard.describe(wait)}.',
+      throw AuthException(
+          'locked', AppStrings.tooManyTries(LoginGuard.describe(wait)),
           retryAfter: wait);
     }
 
     final data = await _readUser(prefs, email);
-    if (data == null || !_sameHash(_hash(data['salt'] as String, password), data['hash'] as String)) {
+    if (data == null ||
+        !_sameHash(
+            _hash(data['salt'] as String, password), data['hash'] as String)) {
       // Count failures even for unknown emails, so the response never reveals which emails exist.
       final lockedNow = guard.recordFailure(now);
       await prefs.setString(_guardKey(email), jsonEncode(guard.toJson()));
       if (lockedNow) {
         throw AuthException('locked',
-            'Too many tries. Try again in ${LoginGuard.describe(LoginGuard.lockTime)}.',
+            AppStrings.tooManyTries(LoginGuard.describe(LoginGuard.lockTime)),
             retryAfter: LoginGuard.lockTime);
       }
-      throw const AuthException('wrong-credentials', AppStrings.wrongCredentials);
+      throw AuthException('wrong-credentials', AppStrings.wrongCredentials);
     }
 
     guard.recordSuccess();
@@ -166,30 +173,39 @@ class AuthService {
     final prefs = await SharedPreferences.getInstance();
     lastDemoResetToken = null;
     if (await _readUser(prefs, email) == null) return;
-    final token = base64UrlEncode(List<int>.generate(24, (_) => _random.nextInt(256)));
+    final token =
+        base64UrlEncode(List<int>.generate(24, (_) => _random.nextInt(256)));
     await prefs.setString(
       _resetKey(token),
       jsonEncode({
         'email': email.trim().toLowerCase(),
-        'expiresAt': DateTime.now().add(resetLinkLifetime).millisecondsSinceEpoch,
+        'expiresAt':
+            DateTime.now().add(resetLinkLifetime).millisecondsSinceEpoch,
       }),
     );
-    lastDemoResetToken = token; // In Firebase mode this token arrives by email instead.
+    lastDemoResetToken =
+        token; // In Firebase mode this token arrives by email instead.
   }
 
-  Future<void> resetPassword({required String token, required String newPassword}) async {
+  Future<void> resetPassword(
+      {required String token, required String newPassword}) async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_resetKey(token));
-    if (raw == null) throw const AuthException('reset-expired', AppStrings.resetExpired);
+    if (raw == null) {
+      throw AuthException('reset-expired', AppStrings.resetExpired);
+    }
     final info = jsonDecode(raw) as Map<String, dynamic>;
     await prefs.remove(_resetKey(token)); // a link works once
-    final expiresAt = DateTime.fromMillisecondsSinceEpoch(info['expiresAt'] as int);
+    final expiresAt =
+        DateTime.fromMillisecondsSinceEpoch(info['expiresAt'] as int);
     if (!DateTime.now().isBefore(expiresAt)) {
-      throw const AuthException('reset-expired', AppStrings.resetExpired);
+      throw AuthException('reset-expired', AppStrings.resetExpired);
     }
     final email = info['email'] as String;
     final data = await _readUser(prefs, email);
-    if (data == null) throw const AuthException('reset-expired', AppStrings.resetExpired);
+    if (data == null) {
+      throw AuthException('reset-expired', AppStrings.resetExpired);
+    }
     final salt = _newSalt();
     data['salt'] = salt;
     data['hash'] = _hash(salt, newPassword);
@@ -240,14 +256,18 @@ class AuthService {
 
   // ---------- US-008 change password ----------
 
-  Future<void> changePassword({required String currentPassword, required String newPassword}) async {
+  Future<void> changePassword(
+      {required String currentPassword, required String newPassword}) async {
     final user = _currentUser;
-    if (user == null) throw const AuthException('not-signed-in', 'Please log in again.');
+    if (user == null) {
+      throw AuthException('not-signed-in', AppStrings.logInAgain);
+    }
     final prefs = await SharedPreferences.getInstance();
     final data = await _readUser(prefs, user.email);
     if (data == null ||
-        !_sameHash(_hash(data['salt'] as String, currentPassword), data['hash'] as String)) {
-      throw const AuthException('wrong-current', 'Your current password is not right.');
+        !_sameHash(_hash(data['salt'] as String, currentPassword),
+            data['hash'] as String)) {
+      throw AuthException('wrong-current', AppStrings.wrongCurrentPassword);
     }
     final salt = _newSalt();
     data['salt'] = salt;

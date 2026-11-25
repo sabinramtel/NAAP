@@ -26,7 +26,8 @@ class _LogoPainter extends CustomPainter {
   _LogoPainter(this.p);
 
   /// Maps the overall progress to the progress of one step that runs from [start] to [end].
-  double _step(double start, double end) => ((p - start) / (end - start)).clamp(0.0, 1.0);
+  double _step(double start, double end) =>
+      ((p - start) / (end - start)).clamp(0.0, 1.0);
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -39,7 +40,8 @@ class _LogoPainter extends CustomPainter {
     canvas.translate(s / 2, s / 2);
     canvas.scale(tile);
     canvas.translate(-s / 2, -s / 2);
-    final rect = RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(s * 0.24));
+    final rect =
+        RRect.fromRectAndRadius(Offset.zero & size, Radius.circular(s * 0.24));
     canvas.drawRRect(rect, Paint()..color = AppColors.blue);
 
     final top = s * 0.28, bottom = s * 0.72, left = s * 0.32, right = s * 0.68;
@@ -59,7 +61,8 @@ class _LogoPainter extends CustomPainter {
     // 2. Left post draws upwards (0.25 - 0.45)
     final a = _step(0.25, 0.45);
     if (a > 0) {
-      canvas.drawLine(Offset(left, bottom), Offset(left, _lerp(bottom, top, a)), post);
+      canvas.drawLine(
+          Offset(left, bottom), Offset(left, _lerp(bottom, top, a)), post);
     }
 
     // 3. Tape draws diagonally (0.45 - 0.65)
@@ -78,13 +81,15 @@ class _LogoPainter extends CustomPainter {
       final t = 0.2 + i * 0.15;
       final cx = left + dx * t, cy = top + dy * t;
       // a short line across the tape, at right angles to it
-      canvas.drawLine(Offset(cx - len * 0.77, cy + len * 0.64), Offset(cx + len * 0.77, cy - len * 0.64), tick);
+      canvas.drawLine(Offset(cx - len * 0.77, cy + len * 0.64),
+          Offset(cx + len * 0.77, cy - len * 0.64), tick);
     }
 
     // 5. Right post draws upwards (0.75 - 0.95)
     final d = _step(0.75, 0.95);
     if (d > 0) {
-      canvas.drawLine(Offset(right, bottom), Offset(right, _lerp(bottom, top, d)), post);
+      canvas.drawLine(
+          Offset(right, bottom), Offset(right, _lerp(bottom, top, d)), post);
     }
     canvas.restore();
   }

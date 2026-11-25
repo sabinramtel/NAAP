@@ -4,7 +4,8 @@ class NaapUser {
   final String email;
   final bool emailVerified;
 
-  const NaapUser({required this.name, required this.email, this.emailVerified = false});
+  const NaapUser(
+      {required this.name, required this.email, this.emailVerified = false});
 
   NaapUser copyWith({String? name, bool? emailVerified}) => NaapUser(
         name: name ?? this.name,

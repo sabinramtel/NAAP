@@ -11,7 +11,8 @@ class SessionStore {
 
   final FlutterSecureStorage _storage;
 
-  SessionStore({FlutterSecureStorage? storage}) : _storage = storage ?? const FlutterSecureStorage();
+  SessionStore({FlutterSecureStorage? storage})
+      : _storage = storage ?? const FlutterSecureStorage();
 
   Future<void> save(String email, {DateTime? now}) async {
     final start = now ?? DateTime.now();
@@ -27,7 +28,8 @@ class SessionStore {
     final raw = await _storage.read(key: _key);
     if (raw == null) return null;
     final data = jsonDecode(raw) as Map<String, dynamic>;
-    final expiresAt = DateTime.fromMillisecondsSinceEpoch(data['expiresAt'] as int);
+    final expiresAt =
+        DateTime.fromMillisecondsSinceEpoch(data['expiresAt'] as int);
     if (!(now ?? DateTime.now()).isBefore(expiresAt)) {
       await clear();
       return null;

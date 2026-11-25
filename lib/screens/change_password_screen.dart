@@ -33,7 +33,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         newPassword: newController.text,
       );
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(AppStrings.passwordChanged)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(AppStrings.passwordChanged)));
       Navigator.of(context).pop();
     } on AuthException catch (e) {
       if (mounted) setState(() => error = e.message);
@@ -53,7 +54,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text(AppStrings.changePassword)),
+      appBar: AppBar(title: Text(AppStrings.changePassword)),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
@@ -67,7 +68,8 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   label: AppStrings.currentPassword,
                   icon: Icons.lock_outline,
                   isPassword: true,
-                  validator: (v) => Validators.notEmpty(v, 'Enter your current password.'),
+                  validator: (v) =>
+                      Validators.notEmpty(v, AppStrings.enterCurrentPassword),
                 ),
                 const SizedBox(height: 14),
                 AppTextField(
@@ -79,7 +81,9 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   validator: (v) {
                     final rule = Validators.password(v);
                     if (rule != null) return rule;
-                    if (v == currentController.text) return 'Use a different password from your current one.';
+                    if (v == currentController.text) {
+                      return AppStrings.differentPassword;
+                    }
                     return null;
                   },
                 ),
@@ -89,15 +93,19 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   label: AppStrings.confirmPassword,
                   icon: Icons.lock_reset,
                   isPassword: true,
-                  validator: (v) => v == newController.text ? null : AppStrings.passwordsDontMatch,
+                  validator: (v) => v == newController.text
+                      ? null
+                      : AppStrings.passwordsDontMatch,
                 ),
                 if (error != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Text(error!, style: const TextStyle(color: AppColors.error)),
+                    child: Text(error!,
+                        style: const TextStyle(color: AppColors.error)),
                   ),
                 const SizedBox(height: 24),
-                PrimaryButton(label: AppStrings.save, loading: loading, onPressed: _save),
+                PrimaryButton(
+                    label: AppStrings.save, loading: loading, onPressed: _save),
               ],
             ),
           ),

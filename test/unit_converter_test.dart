@@ -8,13 +8,17 @@ void main() {
     expect(v.inches, 5);
   });
 
-  test('5 ft 5 in is 165 cm', () => expect(UnitConverter.feetInchesToCm(5, 5), 165));
+  test('5 ft 5 in is 165 cm',
+      () => expect(UnitConverter.feetInchesToCm(5, 5), 165));
 
   test('round trip stays within 1 cm for every valid height', () {
-    for (var cm = UnitConverter.minHeightCm; cm <= UnitConverter.maxHeightCm; cm++) {
+    for (var cm = UnitConverter.minHeightCm;
+        cm <= UnitConverter.maxHeightCm;
+        cm++) {
       final v = UnitConverter.cmToFeetInches(cm);
       final back = UnitConverter.feetInchesToCm(v.feet, v.inches);
-      expect((back - cm).abs() <= 1, isTrue, reason: '$cm cm came back as $back cm');
+      expect((back - cm).abs() <= 1, isTrue,
+          reason: '$cm cm came back as $back cm');
     }
   });
 

@@ -1,3 +1,5 @@
+import '../constants/app_strings.dart';
+
 /// Small helpers for the profile screens (US-011). All O(1) or O(n) in name length.
 class ProfileHelpers {
   ProfileHelpers._();
@@ -18,17 +20,14 @@ class ProfileHelpers {
 
   /// "Aanya Sharma" -> "AS", "aarohi" -> "A". Used when no photo is chosen.
   static String initials(String name) {
-    final parts = name.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty).toList();
+    final parts =
+        name.trim().split(RegExp(r'\s+')).where((p) => p.isNotEmpty).toList();
     if (parts.isEmpty) return '?';
     if (parts.length == 1) return parts.first[0].toUpperCase();
     return (parts.first[0] + parts.last[0]).toUpperCase();
   }
 
   static String formatDate(DateTime d) {
-    const months = [
-      'January', 'February', 'March', 'April', 'May', 'June',
-      'July', 'August', 'September', 'October', 'November', 'December'
-    ];
-    return '${d.day} ${months[d.month - 1]} ${d.year}';
+    return '${d.day} ${AppStrings.monthNames[d.month - 1]} ${d.year}';
   }
 }

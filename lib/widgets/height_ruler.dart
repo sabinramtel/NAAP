@@ -35,12 +35,14 @@ class _HeightRulerState extends State<HeightRuler> {
   void initState() {
     super.initState();
     current = widget.value.clamp(widget.min, widget.max);
-    controller = ScrollController(initialScrollOffset: (current - widget.min) * tickWidth);
+    controller = ScrollController(
+        initialScrollOffset: (current - widget.min) * tickWidth);
     controller.addListener(_onScroll);
   }
 
   void _onScroll() {
-    final v = (widget.min + (controller.offset / tickWidth).round()).clamp(widget.min, widget.max);
+    final v = (widget.min + (controller.offset / tickWidth).round())
+        .clamp(widget.min, widget.max);
     if (v != current) {
       setState(() => current = v);
       widget.onChanged(v);
@@ -98,14 +100,18 @@ class _HeightRulerState extends State<HeightRuler> {
                         Container(
                           width: 2,
                           height: major ? 34 : 18,
-                          color: major ? AppColors.textSecondary : AppColors.border,
+                          color: major
+                              ? AppColors.textSecondary
+                              : AppColors.border,
                         ),
                         const SizedBox(height: 6),
                         if (cm % 10 == 0)
                           OverflowBox(
                             maxWidth: 40,
                             child: Text('$cm',
-                                style: const TextStyle(fontSize: 11, color: AppColors.textSecondary)),
+                                style: const TextStyle(
+                                    fontSize: 11,
+                                    color: AppColors.textSecondary)),
                           ),
                       ],
                     );
@@ -120,7 +126,9 @@ class _HeightRulerState extends State<HeightRuler> {
                     margin: const EdgeInsets.only(top: 6),
                     width: 4,
                     height: 52,
-                    decoration: BoxDecoration(color: AppColors.blue, borderRadius: BorderRadius.circular(2)),
+                    decoration: BoxDecoration(
+                        color: AppColors.blue,
+                        borderRadius: BorderRadius.circular(2)),
                   ),
                 ),
               ),

@@ -11,17 +11,22 @@ import 'primary_button.dart';
 Future<void> showLogoutSheet(BuildContext context) async {
   final confirmed = await showModalBottomSheet<bool>(
     context: context,
-    shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+    shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
     builder: (sheetContext) => Padding(
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(AppStrings.logOutQuestion,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.navy)),
+          Text(AppStrings.logOutQuestion,
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.navy)),
           const SizedBox(height: 6),
-          const Text(AppStrings.logOutBody, style: TextStyle(color: AppColors.textSecondary)),
+          Text(AppStrings.logOutBody,
+              style: TextStyle(color: AppColors.textSecondary)),
           const SizedBox(height: 20),
           Row(
             children: [

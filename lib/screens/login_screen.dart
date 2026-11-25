@@ -56,7 +56,8 @@ class _LoginScreenState extends State<LoginScreen> {
       AppFlow.goAndClear(context, next);
     } on AuthException catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message)));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
     }
   }
 
@@ -80,12 +81,16 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Center(child: NaapLogo(size: 64)),
                 const SizedBox(height: 20),
-                const Text('Welcome back',
+                Text(AppStrings.welcomeBack,
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
+                    style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.navy)),
                 const SizedBox(height: 6),
-                const Text('Log in to see your sizes.',
-                    textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary)),
+                Text(AppStrings.logInToSee,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: AppColors.textSecondary)),
                 const SizedBox(height: 28),
                 AppTextField(
                   controller: emailController,
@@ -100,30 +105,39 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: AppStrings.password,
                   icon: Icons.lock_outline,
                   isPassword: true,
-                  validator: (v) => Validators.notEmpty(v, 'Enter your password.'),
+                  validator: (v) =>
+                      Validators.notEmpty(v, AppStrings.enterPassword),
                 ),
                 if (error != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 10, left: 4),
-                    child: Text(error!, style: const TextStyle(color: AppColors.error)),
+                    child: Text(error!,
+                        style: const TextStyle(color: AppColors.error)),
                   ),
                 Align(
                   alignment: Alignment.centerRight,
                   child: TextButton(
-                    onPressed: () => Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => const ForgotPasswordScreen())),
-                    child: const Text(AppStrings.forgotPassword),
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordScreen())),
+                    child: Text(AppStrings.forgotPassword),
                   ),
                 ),
                 const SizedBox(height: 8),
-                PrimaryButton(label: AppStrings.logIn, loading: loading, onPressed: _logIn),
+                PrimaryButton(
+                    label: AppStrings.logIn,
+                    loading: loading,
+                    onPressed: _logIn),
                 const SizedBox(height: 14),
-                SocialButton(label: AppStrings.continueWithGoogle, image: googleImage, onPressed: _google),
+                SocialButton(
+                    label: AppStrings.continueWithGoogle,
+                    image: googleImage,
+                    onPressed: _google),
                 const SizedBox(height: 8),
                 TextButton(
-                  onPressed: () => Navigator.of(context)
-                      .pushReplacement(MaterialPageRoute(builder: (_) => const SignUpScreen())),
-                  child: const Text(AppStrings.noAccount),
+                  onPressed: () => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (_) => const SignUpScreen())),
+                  child: Text(AppStrings.noAccount),
                 ),
               ],
             ),

@@ -18,7 +18,8 @@ void main() {
       g.recordFailure(start);
     }
     expect(g.recordFailure(start), isTrue);
-    expect(g.isLocked(start.add(const Duration(minutes: 4, seconds: 59))), isTrue);
+    expect(
+        g.isLocked(start.add(const Duration(minutes: 4, seconds: 59))), isTrue);
     expect(g.isLocked(start.add(const Duration(minutes: 5))), isFalse);
   });
 
@@ -41,6 +42,7 @@ void main() {
 
   test('describe', () {
     expect(LoginGuard.describe(const Duration(seconds: 40)), '40 s');
-    expect(LoginGuard.describe(const Duration(minutes: 4, seconds: 10)), '4 min 10 s');
+    expect(LoginGuard.describe(const Duration(minutes: 4, seconds: 10)),
+        '4 min 10 s');
   });
 }

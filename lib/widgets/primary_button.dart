@@ -22,9 +22,14 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final child = loading
         ? const SizedBox(
-            width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white))
-        : Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
-    final shape = RoundedRectangleBorder(borderRadius: BorderRadius.circular(14));
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(
+                strokeWidth: 2.5, color: Colors.white))
+        : Text(label,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600));
+    final shape =
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(14));
     return SizedBox(
       height: 54,
       width: double.infinity,

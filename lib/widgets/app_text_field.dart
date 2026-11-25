@@ -35,7 +35,8 @@ class AppTextField extends StatefulWidget {
 class _AppTextFieldState extends State<AppTextField> {
   bool hidden = true;
 
-  OutlineInputBorder _border(Color color, [double width = 1]) => OutlineInputBorder(
+  OutlineInputBorder _border(Color color, [double width = 1]) =>
+      OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
         borderSide: BorderSide(color: color, width: width),
       );
@@ -56,7 +57,9 @@ class _AppTextFieldState extends State<AppTextField> {
         helperText: widget.helperText,
         helperMaxLines: 2,
         errorMaxLines: 2,
-        prefixIcon: widget.icon == null ? null : Icon(widget.icon, color: AppColors.textSecondary),
+        prefixIcon: widget.icon == null
+            ? null
+            : Icon(widget.icon, color: AppColors.textSecondary),
         suffixIcon: widget.isPassword
             ? IconButton(
                 tooltip: hidden ? 'Show password' : 'Hide password',

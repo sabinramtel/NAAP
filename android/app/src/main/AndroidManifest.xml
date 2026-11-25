@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- US-022: needed for the online check (and later the shop backend) in release builds. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="NAAP"
         android:name="${applicationName}"

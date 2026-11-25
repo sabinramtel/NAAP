@@ -3,9 +3,11 @@ import 'package:naap/utils/validators.dart';
 
 void main() {
   group('email', () {
-    test('accepts a normal address', () => expect(Validators.email('sabin@example.com'), isNull));
+    test('accepts a normal address',
+        () => expect(Validators.email('sabin@example.com'), isNull));
     test('rejects empty', () => expect(Validators.email(''), isNotNull));
-    test('rejects missing domain', () => expect(Validators.email('sabin@'), isNotNull));
+    test('rejects missing domain',
+        () => expect(Validators.email('sabin@'), isNotNull));
     test('trims spaces', () => expect(Validators.email('  a@b.com  '), isNull));
   });
 

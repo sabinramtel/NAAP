@@ -18,9 +18,10 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-  late final AnimationController controller =
-      AnimationController(vsync: this, duration: const Duration(milliseconds: 1800));
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController controller = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 1800));
   bool started = false;
 
   @override
@@ -40,7 +41,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   /// Loads the session while the logo plays, so the wait is never longer than the animation.
   Future<void> _openNextScreen(bool reduceMotion) async {
-    final minimumShow = Future.delayed(Duration(milliseconds: reduceMotion ? 500 : 2300));
+    final minimumShow =
+        Future.delayed(Duration(milliseconds: reduceMotion ? 500 : 2300));
     Widget next;
     final user = await AuthService.instance.restoreSession();
     if (user != null) {
@@ -55,7 +57,8 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     Navigator.of(context).pushReplacement(PageRouteBuilder(
       transitionDuration: const Duration(milliseconds: 400),
       pageBuilder: (_, __, ___) => next,
-      transitionsBuilder: (_, animation, __, child) => FadeTransition(opacity: animation, child: child),
+      transitionsBuilder: (_, animation, __, child) =>
+          FadeTransition(opacity: animation, child: child),
     ));
   }
 
@@ -87,7 +90,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         opacity: wordOpacity,
                         child: Transform.translate(
                           offset: Offset(0, 12 * (1 - wordOpacity)),
-                          child: const Column(
+                          child: Column(
                             children: [
                               Text(AppStrings.appName,
                                   style: TextStyle(
@@ -96,8 +99,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                                       letterSpacing: 1,
                                       color: AppColors.navy)),
                               SizedBox(height: 4),
-                              Text('${AppStrings.appNameNepali} · measure',
-                                  style: TextStyle(fontSize: 15, color: AppColors.textSecondary)),
+                              Text(
+                                  '${AppStrings.appNameNepali} · ${AppStrings.measure}',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      color: AppColors.textSecondary)),
                             ],
                           ),
                         ),
@@ -111,9 +117,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   bottom: 32,
                   child: Opacity(
                     opacity: (t / 0.6).clamp(0.0, 1.0),
-                    child: const Text(AppStrings.fromTeam,
+                    child: Text(AppStrings.fromTeam,
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textSecondary)),
                   ),
                 ),
               ],

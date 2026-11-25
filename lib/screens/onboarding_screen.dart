@@ -30,14 +30,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _finish() async {
     await ProfileStore.instance.markOnboardingSeen();
     if (!mounted) return;
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const SignUpScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const SignUpScreen()));
   }
 
   void _next() {
     if (page == pageCount - 1) {
       _finish();
     } else {
-      controller.nextPage(duration: const Duration(milliseconds: 350), curve: Curves.easeOut);
+      controller.nextPage(
+          duration: const Duration(milliseconds: 350), curve: Curves.easeOut);
     }
   }
 
@@ -56,7 +58,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(onPressed: _finish, child: const Text(AppStrings.skip)),
+              child:
+                  TextButton(onPressed: _finish, child: Text(AppStrings.skip)),
             ),
             Expanded(
               child: PageView.builder(
@@ -73,17 +76,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         child: Container(
                           width: 180,
                           height: 180,
-                          decoration: const BoxDecoration(color: AppColors.blueSoft, shape: BoxShape.circle),
-                          child: Icon(icons[i], size: 84, color: AppColors.blue),
+                          decoration: const BoxDecoration(
+                              color: AppColors.blueSoft,
+                              shape: BoxShape.circle),
+                          child:
+                              Icon(icons[i], size: 84, color: AppColors.blue),
                         ),
                       ),
                       const SizedBox(height: 48),
                       Text(AppStrings.onboardingTitles[i],
                           style: const TextStyle(
-                              fontSize: 28, fontWeight: FontWeight.w700, color: AppColors.navy, height: 1.15)),
+                              fontSize: 28,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.navy,
+                              height: 1.15)),
                       const SizedBox(height: 12),
                       Text(AppStrings.onboardingBodies[i],
-                          style: const TextStyle(fontSize: 16, color: AppColors.textSecondary, height: 1.5)),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: AppColors.textSecondary,
+                              height: 1.5)),
                     ],
                   ),
                 ),
@@ -92,7 +104,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             PageDots(count: pageCount, current: page),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 24, 24, 24),
-              child: PrimaryButton(label: last ? AppStrings.getStarted : AppStrings.next, onPressed: _next),
+              child: PrimaryButton(
+                  label: last ? AppStrings.getStarted : AppStrings.next,
+                  onPressed: _next),
             ),
           ],
         ),

@@ -25,7 +25,8 @@ class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
   Future<void> _resend() async {
     await AuthService.instance.sendVerificationEmail();
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(AppStrings.verificationSent)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(AppStrings.verificationSent)));
     setState(() => secondsLeft = cooldownSeconds);
     timer?.cancel();
     timer = Timer.periodic(const Duration(seconds: 1), (t) {
@@ -41,7 +42,8 @@ class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
   Future<void> _demoVerify() async {
     await AuthService.instance.markEmailVerifiedDemo();
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(AppStrings.emailVerified)));
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(content: Text(AppStrings.emailVerified)));
     widget.onVerified();
   }
 
@@ -63,11 +65,13 @@ class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
               Icon(Icons.mark_email_unread_outlined, color: AppColors.navy),
               SizedBox(width: 10),
-              Expanded(child: Text(AppStrings.verifyBanner, style: TextStyle(fontWeight: FontWeight.w600))),
+              Expanded(
+                  child: Text(AppStrings.verifyBanner,
+                      style: TextStyle(fontWeight: FontWeight.w600))),
             ],
           ),
           const SizedBox(height: 8),
@@ -76,10 +80,14 @@ class _VerifyEmailBannerState extends State<VerifyEmailBanner> {
             children: [
               TextButton(
                 onPressed: secondsLeft > 0 ? null : _resend,
-                child: Text(secondsLeft > 0 ? 'Resend in ${secondsLeft}s' : AppStrings.resendEmail),
+                child: Text(secondsLeft > 0
+                    ? AppStrings.resendIn(secondsLeft)
+                    : AppStrings.resendEmail),
               ),
               // Local mode only: stands in for tapping the link in the email.
-              TextButton(onPressed: _demoVerify, child: const Text('Mark verified (demo)')),
+              TextButton(
+                  onPressed: _demoVerify,
+                  child: Text(AppStrings.markVerifiedDemo)),
             ],
           ),
         ],
