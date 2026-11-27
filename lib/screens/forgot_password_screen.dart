@@ -52,10 +52,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Reset your password',
+                Text(AppStrings.resetYourPassword,
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
                 const SizedBox(height: 6),
-                const Text("Enter your email and we'll send you a link.",
+                Text(AppStrings.resetIntro,
                     style: TextStyle(color: AppColors.textSecondary)),
                 const SizedBox(height: 24),
                 AppTextField(
@@ -75,14 +75,14 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       color: AppColors.success.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(14),
                     ),
-                    child: const Text(AppStrings.resetSentMessage),
+                    child: Text(AppStrings.resetSentMessage),
                   ),
                   // Local mode only: stands in for tapping the link in the email.
                   TextButton(
                     onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (_) => ResetPasswordScreen(token: AuthService.instance.lastDemoResetToken ?? ''),
                     )),
-                    child: const Text('Open reset link (demo)'),
+                    child: Text(AppStrings.openResetLinkDemo),
                   ),
                 ],
               ],
