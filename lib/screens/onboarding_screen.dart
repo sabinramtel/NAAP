@@ -56,7 +56,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Align(
               alignment: Alignment.centerRight,
-              child: TextButton(onPressed: _finish, child: const Text(AppStrings.skip)),
+              child: TextButton(onPressed: _finish, child: Text(AppStrings.skip)),
             ),
             Expanded(
               child: PageView.builder(
