@@ -92,7 +92,7 @@ class AuthService {
   Future<NaapUser> signUp({required String name, required String email, required String password}) async {
     final prefs = await SharedPreferences.getInstance();
     if (await _readUser(prefs, email) != null) {
-      throw const AuthException('email-taken', AppStrings.emailTaken);
+      throw AuthException('email-taken', AppStrings.emailTaken);
     }
     final salt = _newSalt();
     final data = {
@@ -113,10 +113,7 @@ class AuthService {
   // ---------- US-002 Google ----------
 
   Future<NaapUser> signInWithGoogle() async {
-    throw const AuthException(
-      'google-needs-firebase',
-      'Google sign-in will work once the team connects Firebase. Use email for now.',
-    );
+    throw AuthException('google-needs-firebase', AppStrings.googleNeedsFirebase);
   }
 
   // ---------- US-003 log in with lockout ----------
@@ -134,7 +131,7 @@ class AuthService {
 
     final wait = guard.remainingLock(now);
     if (wait != null) {
-      throw AuthException('locked', 'Too many tries. Try again in ${LoginGuard.describe(wait)}.',
+      throw AuthException('locked', AppStrings.tooManyTries(LoginGuard.describe(wait)),
           retryAfter: wait);
     }
 
@@ -145,10 +142,10 @@ class AuthService {
       await prefs.setString(_guardKey(email), jsonEncode(guard.toJson()));
       if (lockedNow) {
         throw AuthException('locked',
-            'Too many tries. Try again in ${LoginGuard.describe(LoginGuard.lockTime)}.',
+            AppStrings.tooManyTries(LoginGuard.describe(LoginGuard.lockTime)),
             retryAfter: LoginGuard.lockTime);
       }
-      throw const AuthException('wrong-credentials', AppStrings.wrongCredentials);
+      throw AuthException('wrong-credentials', AppStrings.wrongCredentials);
     }
 
     guard.recordSuccess();
@@ -180,16 +177,16 @@ class AuthService {
   Future<void> resetPassword({required String token, required String newPassword}) async {
     final prefs = await SharedPreferences.getInstance();
     final raw = prefs.getString(_resetKey(token));
-    if (raw == null) throw const AuthException('reset-expired', AppStrings.resetExpired);
+    if (raw == null) throw AuthException('reset-expired', AppStrings.resetExpired);
     final info = jsonDecode(raw) as Map<String, dynamic>;
     await prefs.remove(_resetKey(token)); // a link works once
     final expiresAt = DateTime.fromMillisecondsSinceEpoch(info['expiresAt'] as int);
     if (!DateTime.now().isBefore(expiresAt)) {
-      throw const AuthException('reset-expired', AppStrings.resetExpired);
+      throw AuthException('reset-expired', AppStrings.resetExpired);
     }
     final email = info['email'] as String;
     final data = await _readUser(prefs, email);
-    if (data == null) throw const AuthException('reset-expired', AppStrings.resetExpired);
+    if (data == null) throw AuthException('reset-expired', AppStrings.resetExpired);
     final salt = _newSalt();
     data['salt'] = salt;
     data['hash'] = _hash(salt, newPassword);
@@ -242,12 +239,12 @@ class AuthService {
 
   Future<void> changePassword({required String currentPassword, required String newPassword}) async {
     final user = _currentUser;
-    if (user == null) throw const AuthException('not-signed-in', 'Please log in again.');
+    if (user == null) throw AuthException('not-signed-in', AppStrings.logInAgain);
     final prefs = await SharedPreferences.getInstance();
     final data = await _readUser(prefs, user.email);
     if (data == null ||
         !_sameHash(_hash(data['salt'] as String, currentPassword), data['hash'] as String)) {
-      throw const AuthException('wrong-current', 'Your current password is not right.');
+      throw AuthException('wrong-current', AppStrings.wrongCurrentPassword);
     }
     final salt = _newSalt();
     data['salt'] = salt;
