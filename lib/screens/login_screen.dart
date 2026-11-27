@@ -80,11 +80,11 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Center(child: NaapLogo(size: 64)),
                 const SizedBox(height: 20),
-                const Text('Welcome back',
+                Text(AppStrings.welcomeBack,
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
                 const SizedBox(height: 6),
-                const Text('Log in to see your sizes.',
+                Text(AppStrings.logInToSee,
                     textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary)),
                 const SizedBox(height: 28),
                 AppTextField(
@@ -100,7 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   label: AppStrings.password,
                   icon: Icons.lock_outline,
                   isPassword: true,
-                  validator: (v) => Validators.notEmpty(v, 'Enter your password.'),
+                  validator: (v) => Validators.notEmpty(v, AppStrings.enterPassword),
                 ),
                 if (error != null)
                   Padding(
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: TextButton(
                     onPressed: () => Navigator.of(context)
                         .push(MaterialPageRoute(builder: (_) => const ForgotPasswordScreen())),
-                    child: const Text(AppStrings.forgotPassword),
+                    child: Text(AppStrings.forgotPassword),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -123,7 +123,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 TextButton(
                   onPressed: () => Navigator.of(context)
                       .pushReplacement(MaterialPageRoute(builder: (_) => const SignUpScreen())),
-                  child: const Text(AppStrings.noAccount),
+                  child: Text(AppStrings.noAccount),
                 ),
               ],
             ),

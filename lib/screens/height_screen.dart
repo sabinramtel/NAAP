@@ -10,7 +10,6 @@ import '../services/profile_store.dart';
 import '../utils/unit_converter.dart';
 import '../widgets/height_ruler.dart';
 import '../widgets/primary_button.dart';
-import 'home_screen.dart';
 
 /// US-012: pick height on a ruler or type it, in cm or ft/in. Height is always
 /// stored in whole centimetres; feet and inches are only for display.
@@ -68,18 +67,14 @@ class _HeightScreenState extends State<HeightScreen> {
 
   Future<void> _save() async {
     if (!UnitConverter.isHeightValid(heightCm)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(AppStrings.heightOutOfRange)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.heightOutOfRange)));
       return;
     }
     setState(() => loading = true);
     final base = profile ?? UserProfile(name: AuthService.instance.currentUser?.name ?? '');
     await ProfileStore.instance.save(email, base.copyWith(heightCm: heightCm, prefersImperial: imperial));
     if (!mounted) return;
-    if (widget.editing) {
-      Navigator.of(context).pop(true);
-    } else {
-      AppFlow.goAndClear(context, const HomeScreen());
-    }
+    await AppFlow.finishStep(context, editing: widget.editing);
   }
 
   @override
@@ -87,7 +82,7 @@ class _HeightScreenState extends State<HeightScreen> {
     final shown = imperial ? UnitConverter.formatFeetInches(heightCm) : UnitConverter.formatCm(heightCm);
     final other = imperial ? UnitConverter.formatCm(heightCm) : UnitConverter.formatFeetInches(heightCm);
     return Scaffold(
-      appBar: AppBar(title: Text(widget.editing ? 'Edit height' : 'Step 2 of 2')),
+      appBar: AppBar(title: Text(widget.editing ? AppStrings.editHeight : AppFlow.stepLabel(SetupStep.height))),
       body: SafeArea(
         child: !ready
             ? const Center(child: CircularProgressIndicator())
@@ -96,10 +91,10 @@ class _HeightScreenState extends State<HeightScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Text(AppStrings.howTall,
+                    Text(AppStrings.howTall,
                         style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
                     const SizedBox(height: 6),
-                    const Text(AppStrings.heightHelp, style: TextStyle(color: AppColors.textSecondary)),
+                    Text(AppStrings.heightHelp, style: TextStyle(color: AppColors.textSecondary)),
                     const SizedBox(height: 20),
                     Center(
                       child: SegmentedButton<bool>(
@@ -115,7 +110,7 @@ class _HeightScreenState extends State<HeightScreen> {
                     // Tap the number to type it instead of dragging.
                     Semantics(
                       button: true,
-                      label: 'Type your height',
+                      label: AppStrings.typeYourHeight,
                       child: InkWell(
                         borderRadius: BorderRadius.circular(16),
                         onTap: _typeHeight,
@@ -126,7 +121,7 @@ class _HeightScreenState extends State<HeightScreen> {
                               Text(shown,
                                   style: const TextStyle(
                                       fontSize: 44, fontWeight: FontWeight.w800, color: AppColors.navy)),
-                              Text('$other  ·  tap to type',
+                              Text('$other  ·  ${AppStrings.tapToType}',
                                   style: const TextStyle(color: AppColors.textSecondary)),
                             ],
                           ),
@@ -223,7 +218,7 @@ class _TypeHeightDialogState extends State<_TypeHeightDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Type your height'),
+      title: Text(AppStrings.typeYourHeight),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -240,8 +235,8 @@ class _TypeHeightDialogState extends State<_TypeHeightDialog> {
         ],
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text(AppStrings.cancel)),
-        FilledButton(onPressed: _done, child: const Text(AppStrings.save)),
+        TextButton(onPressed: () => Navigator.of(context).pop(), child: Text(AppStrings.cancel)),
+        FilledButton(onPressed: _done, child: Text(AppStrings.save)),
       ],
     );
   }

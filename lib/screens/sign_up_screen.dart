@@ -10,7 +10,6 @@ import '../widgets/app_text_field.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/social_button.dart';
 import 'login_screen.dart';
-import 'profile_setup_screen.dart';
 
 /// US-001 (email sign-up) and US-002 (Google button).
 class SignUpScreen extends StatefulWidget {
@@ -33,14 +32,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
     if (!formKey.currentState!.validate()) return;
     setState(() => loading = true);
     try {
-      await AuthService.instance.signUp(
+      final user = await AuthService.instance.signUp(
         name: nameController.text,
         email: emailController.text,
         password: passController.text,
       );
+      final next = await AppFlow.screenAfterLogin(user); // Sprint 2: setup starts with language
       if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text(AppStrings.verificationSent)));
-      AppFlow.goAndClear(context, const ProfileSetupScreen());
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(AppStrings.verificationSent)));
+      AppFlow.goAndClear(context, next);
     } on AuthException catch (e) {
       if (!mounted) return;
       if (e.code == 'email-taken') {
@@ -89,19 +89,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Create your account',
+                Text(AppStrings.createYourAccount,
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
                 const SizedBox(height: 6),
-                const Text('Your measurements stay private to you.',
+                Text(AppStrings.measurementsPrivate,
                     style: TextStyle(color: AppColors.textSecondary)),
                 const SizedBox(height: 24),
                 SocialButton(label: AppStrings.continueWithGoogle, image: googleImage, onPressed: _google),
                 const SizedBox(height: 18),
-                const Row(children: [
+                Row(children: [
                   Expanded(child: Divider()),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Text('or with email', style: TextStyle(color: AppColors.textSecondary)),
+                    child: Text(AppStrings.orWithEmail, style: TextStyle(color: AppColors.textSecondary)),
                   ),
                   Expanded(child: Divider()),
                 ]),
@@ -128,10 +128,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     padding: const EdgeInsets.only(top: 6, left: 4),
                     child: Row(
                       children: [
-                        const Flexible(
+                        Flexible(
                           child: Text(AppStrings.emailTaken, style: TextStyle(color: AppColors.error)),
                         ),
-                        TextButton(onPressed: _goToLogin, child: const Text(AppStrings.goToLogin)),
+                        TextButton(onPressed: _goToLogin, child: Text(AppStrings.goToLogin)),
                       ],
                     ),
                   ),
@@ -147,7 +147,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(height: 28),
                 PrimaryButton(label: AppStrings.createAccount, loading: loading, onPressed: _createAccount),
                 const SizedBox(height: 8),
-                Center(child: TextButton(onPressed: _goToLogin, child: const Text(AppStrings.haveAccount))),
+                Center(child: TextButton(onPressed: _goToLogin, child: Text(AppStrings.haveAccount))),
               ],
             ),
           ),

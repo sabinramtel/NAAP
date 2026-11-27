@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'constants/app_colors.dart';
 import 'screens/splash_screen.dart';
+import 'services/language_controller.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // US-016: open in the language chosen last time.
+  await LanguageController.instance.load();
   runApp(const NaapApp());
 }
 
