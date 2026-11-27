@@ -87,7 +87,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                         opacity: wordOpacity,
                         child: Transform.translate(
                           offset: Offset(0, 12 * (1 - wordOpacity)),
-                          child: const Column(
+                          child: Column(
                             children: [
                               Text(AppStrings.appName,
                                   style: TextStyle(
@@ -96,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                                       letterSpacing: 1,
                                       color: AppColors.navy)),
                               SizedBox(height: 4),
-                              Text('${AppStrings.appNameNepali} · measure',
+                              Text('${AppStrings.appNameNepali} · ${AppStrings.measure}',
                                   style: TextStyle(fontSize: 15, color: AppColors.textSecondary)),
                             ],
                           ),
@@ -111,7 +111,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                   bottom: 32,
                   child: Opacity(
                     opacity: (t / 0.6).clamp(0.0, 1.0),
-                    child: const Text(AppStrings.fromTeam,
+                    child: Text(AppStrings.fromTeam,
                         textAlign: TextAlign.center,
                         style: TextStyle(fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
                   ),
