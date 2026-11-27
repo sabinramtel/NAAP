@@ -18,10 +18,10 @@ Future<void> showLogoutSheet(BuildContext context) async {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(AppStrings.logOutQuestion,
+          Text(AppStrings.logOutQuestion,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.navy)),
           const SizedBox(height: 6),
-          const Text(AppStrings.logOutBody, style: TextStyle(color: AppColors.textSecondary)),
+          Text(AppStrings.logOutBody, style: TextStyle(color: AppColors.textSecondary)),
           const SizedBox(height: 20),
           Row(
             children: [
