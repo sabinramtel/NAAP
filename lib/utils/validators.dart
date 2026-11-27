@@ -1,3 +1,5 @@
+import '../constants/app_strings.dart';
+
 /// Input checks used by the sign-up, log-in and profile forms.
 /// Each check walks the text once: O(n) time, O(1) extra space.
 class Validators {
@@ -8,8 +10,8 @@ class Validators {
   /// Returns an error message, or null when the email looks valid.
   static String? email(String? value) {
     final text = (value ?? '').trim();
-    if (text.isEmpty) return 'Enter your email.';
-    if (!_emailPattern.hasMatch(text)) return 'Enter a valid email, like name@example.com.';
+    if (text.isEmpty) return AppStrings.enterEmail;
+    if (!_emailPattern.hasMatch(text)) return AppStrings.invalidEmail;
     return null;
   }
 
@@ -17,8 +19,8 @@ class Validators {
   /// One pass over the characters, stops early once a digit is found.
   static String? password(String? value) {
     final text = value ?? '';
-    if (text.length < 8) return 'Use at least 8 characters.';
-    if (!hasDigit(text)) return 'Add at least one number.';
+    if (text.length < 8) return AppStrings.passwordTooShort;
+    if (!hasDigit(text)) return AppStrings.passwordNeedsNumber;
     return null;
   }
 
@@ -32,8 +34,8 @@ class Validators {
 
   static String? name(String? value) {
     final text = (value ?? '').trim();
-    if (text.isEmpty) return 'Enter your name.';
-    if (text.length < 2) return 'Name looks too short.';
+    if (text.isEmpty) return AppStrings.enterName;
+    if (text.length < 2) return AppStrings.nameTooShort;
     return null;
   }
 
