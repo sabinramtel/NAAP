@@ -34,7 +34,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       await AuthService.instance.resetPassword(token: widget.token, newPassword: newController.text);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password changed. Log in with your new password.')));
+          SnackBar(content: Text(AppStrings.passwordChangedLogIn)));
       AppFlow.goAndClear(context, const LoginScreen());
     } on AuthException catch (e) {
       if (mounted) setState(() => error = e.message);
@@ -62,7 +62,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Choose a new password',
+                Text(AppStrings.chooseNewPassword,
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
                 const SizedBox(height: 24),
                 AppTextField(
