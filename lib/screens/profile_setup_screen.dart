@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../app_flow.dart';
 import '../constants/app_colors.dart';
 import '../constants/app_strings.dart';
 import '../models/user_profile.dart';
@@ -12,7 +11,7 @@ import '../utils/profile_helpers.dart';
 import '../utils/validators.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/primary_button.dart';
-import 'height_screen.dart';
+import '../widgets/profile_avatar.dart';
 
 /// US-011: name, date of birth (18+) and an optional photo.
 /// With [editing] true it is opened from Home and simply goes back after saving.
@@ -79,7 +78,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     } catch (_) {
       if (!mounted) return;
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Could not open your photos. You can add one later.')));
+          .showSnackBar(SnackBar(content: Text(AppStrings.photoError)));
     }
   }
 
@@ -88,7 +87,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     final now = DateTime.now();
     setState(() {
       if (birthDate == null) {
-        dateError = 'Pick your date of birth.';
+        dateError = AppStrings.pickDateOfBirth;
       } else if (!ProfileHelpers.isOldEnough(birthDate!, now)) {
         dateError = AppStrings.underAge;
       } else {
@@ -108,11 +107,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
     if (!mounted) return;
     setState(() => loading = false);
 
-    if (widget.editing) {
-      Navigator.of(context).pop(true);
-    } else {
-      Navigator.of(context).push(MaterialPageRoute(builder: (_) => const HeightScreen()));
-    }
+    await AppFlow.finishStep(context, editing: widget.editing);
   }
 
   @override
@@ -123,11 +118,10 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final hasPhoto = photoPath != null && File(photoPath!).existsSync();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: widget.editing,
-        title: widget.editing ? const Text('Edit profile') : const Text('Step 1 of 2'),
+        title: Text(widget.editing ? AppStrings.editProfile : AppFlow.stepLabel(SetupStep.profile)),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -137,7 +131,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(AppStrings.aboutYou,
+                Text(AppStrings.aboutYou,
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: AppColors.navy)),
                 const SizedBox(height: 24),
                 Center(
@@ -145,20 +139,9 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     onTap: _pickPhoto,
                     child: Column(
                       children: [
-                        CircleAvatar(
-                          radius: 48,
-                          backgroundColor: AppColors.blueSoft,
-                          backgroundImage: hasPhoto ? FileImage(File(photoPath!)) : null,
-                          child: hasPhoto
-                              ? null
-                              : Text(
-                                  ProfileHelpers.initials(nameController.text),
-                                  style: const TextStyle(
-                                      fontSize: 30, fontWeight: FontWeight.w700, color: AppColors.blue),
-                                ),
-                        ),
+                        ProfileAvatar(name: nameController.text, photoPath: photoPath, radius: 48),
                         const SizedBox(height: 8),
-                        const Text(AppStrings.addPhoto, style: TextStyle(color: AppColors.blue)),
+                        Text(AppStrings.addPhoto, style: TextStyle(color: AppColors.blue)),
                       ],
                     ),
                   ),
@@ -190,7 +173,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                       ),
                     ),
                     child: Text(
-                      birthDate == null ? 'Tap to choose' : ProfileHelpers.formatDate(birthDate!),
+                      birthDate == null ? AppStrings.tapToChoose : ProfileHelpers.formatDate(birthDate!),
                       style: TextStyle(
                           color: birthDate == null ? AppColors.textSecondary : AppColors.textPrimary,
                           fontSize: 16),
