@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../constants/app_colors.dart';
+import '../constants/app_strings.dart';
 
-/// Dots under the welcome screens (US-009). The current one stretches into a pill.
+/// Page dots: the current one stretches into a pill. Used by the welcome
+/// screens (US-009), Home guide (US-027), banner (US-025) and size cards (US-026).
 class PageDots extends StatelessWidget {
   final int count;
   final int current;
@@ -12,7 +14,7 @@ class PageDots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Semantics(
-      label: 'Page ${current + 1} of $count',
+      label: AppStrings.pageOf(current + 1, count),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(count, (i) {

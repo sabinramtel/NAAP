@@ -269,6 +269,42 @@ class AppStrings {
   static String hoursAgo(int n) => _t("$n h ago", "$n घण्टा अघि");
   static String daysAgo(int n) => _t("$n d ago", "$n दिन अघि");
 
+
+  // Page dots, shared by welcome screens, Home guide, banner and size cards
+  static String pageOf(int page, int total) => _t("Page $page of $total", "पृष्ठ $page / $total");
+
+  // Help and feedback (US-023)
+  static String get helpAndFeedback => _t("Help and feedback", "सहयोग र सुझाव");
+  static String get commonQuestions => _t("Common questions", "धेरै सोधिने प्रश्न");
+  static String get searchHelp => _t("Search questions", "प्रश्न खोज्नुहोस्");
+  static String get noHelpMatch => _t("No questions match your search.", "खोजसँग मिल्ने प्रश्न भेटिएन।");
+  static String get sendFeedback => _t("Send us feedback", "सुझाव पठाउनुहोस्");
+  static String get feedbackHint =>
+      _t("Tell us what went wrong or what you'd like to see.", "के बिग्रियो वा के थप्न चाहनुहुन्छ, लेख्नुहोस्।");
+  static String get feedbackThanks =>
+      _t("Thank you. Your feedback helps us make NAAP better.", "धन्यवाद। तपाईंको सुझावले नाप अझ राम्रो बनाउँछ।");
+  static String get replayGuide => _t("Show the Home guide again", "गृह गाइड फेरि हेर्नुहोस्");
+
+  // Home guide (US-027)
+  static List<String> get guideTitles => [bodyScan, tabTryOn, sizeGuide];
+  static List<String> get guideBodies => [
+        _t("Tap Body scan under your sizes to measure yourself from two photos.",
+            "दुई फोटोबाट आफूलाई नाप्न साइज मुनिको बडी स्क्यान थिच्नुहोस्।"),
+        _t("Use the Try-On tab at the bottom to see clothes on your avatar.",
+            "अवतारमा लुगा हेर्न तलको लगाएर हेर्नुहोस् ट्याब प्रयोग गर्नुहोस्।"),
+        _t("Tap Size guide on Home to see how each brand's sizes run.",
+            "हरेक ब्रान्डको साइज कस्तो आउँछ हेर्न गृहमा साइज गाइड थिच्नुहोस्।"),
+      ];
+  static String get gotIt => _t("Got it", "बुझें");
+
+  // Home banner (US-025)
+  static String get promoNewTitle => _t("New this week", "यो हप्ता नयाँ");
+  static String get promoNewBody => _t("Fresh arrivals picked for your size", "तपाईंको साइजका नयाँ लुगा");
+  static String get promoEthnicTitle => _t("Festival wear", "चाडपर्वको पहिरन");
+  static String get promoEthnicBody => _t("Kurtas and dresses for the season", "यो सिजनका कुर्ता र ड्रेस");
+  static String get promoSportTitle => _t("Gym ready", "जिमका लागि तयार");
+  static String get promoSportBody => _t("Training wear that moves with you", "सजिलै चल्ने खेलकुद पहिरन");
+
   // Profile tab
   static String get preferences => _t("Preferences", "रोजाइ");
   static String get account => _t("Account", "खाता");
